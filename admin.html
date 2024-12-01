@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>最終關卡-後台</title>
+    <script type="module" crossorigin src="/Hw9-js/assets/admin-e762e74c.js"></script>
+    <link rel="modulepreload" crossorigin href="/Hw9-js/assets/sweetalert2.esm.all-76dfd3af.js">
+    <link rel="stylesheet" href="/Hw9-js/assets/sweetalert2.esm-3a072159.css">
+  </head>
+  <body>
+    <nav class="topBar">
+      <div class="wrap">
+        <h1><a href="index.html" class="logo">WOWOROOM</a></h1>
+        <span class="material-icons menuToggle"> menu </span>
+        <ul class="topBar-menu">
+          <li><a href="#">後台管理</a></li>
+          <li><a href="#">管理員登入</a></li>
+        </ul>
+      </div>
+    </nav>
+    <section class="wrap">
+      <h2 class="section-title">全產品類別營收比重</h2>
+      <div id="chart"></div>
+    </section>
+    <section class="wrap orderPage-list">
+      <a href="#" class="discardAllBtn">清除全部訂單</a>
+      <div class="orderTableWrap">
+        <table class="orderPage-table"></table>
+      </div>
+    </section>
+    <script>
+      // 預設 JS，請同學不要修改此處
+      let menuOpenBtn = document.querySelector(".menuToggle");
+      let linkBtn = document.querySelectorAll(".topBar-menu a");
+      let menu = document.querySelector(".topBar-menu");
+      menuOpenBtn.addEventListener("click", menuToggle);
+
+      linkBtn.forEach((item) => {
+        item.addEventListener("click", closeMenu);
+      });
+
+      function menuToggle() {
+        if (menu.classList.contains("openMenu")) {
+          menu.classList.remove("openMenu");
+        } else {
+          menu.classList.add("openMenu");
+        }
+      }
+      function closeMenu() {
+        menu.classList.remove("openMenu");
+      }
+    </script>
+    
+    
+  </body>
+</html>
