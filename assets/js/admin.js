@@ -104,8 +104,20 @@ function renderOrderList(data) {
     });
 }
 
-// 圓餅圖
+// 全品項營收比重 圓餅圖
 function chart(data) {
+    console.log(data);
+    if (data.length === 0) {
+        c3.generate({
+            bindto: '#chart',
+            data: {
+                type: "pie",
+                columns: []
+            }
+        });
+        return;
+    }
+
     let obj = {};
     data.forEach((item) => {
         item.products.forEach((productItem) => {
@@ -117,23 +129,74 @@ function chart(data) {
         });
     });
 
+    // 將品項按數量排序
+    let sortedItems = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+
+    // 取前三名品項，將其餘品項統整為「其它」
     let newData = [];
-    let keys = Object.keys(obj);
-    keys.forEach((item) => {
-        let ary = [];
-        ary.push(item);
-        ary.push(obj[item]);
-        newData.push(ary);
+    let otherQuantity = 0;
+    sortedItems.forEach((item, index) => {
+        if (index < 3) {
+            newData.push(item);
+        } else {
+            otherQuantity += item[1];
+        }
     });
+    if (otherQuantity > 0) {
+        newData.push(["其它", otherQuantity]);
+    }
 
     let chart = c3.generate({
         bindto: '#chart', // HTML 元素綁定
         data: {
             type: "pie",
             columns: newData,
+            colors: {
+                "其它": "#301e5f",
+                [newData[0][0]]: "#5434A7",
+                [newData[1][0]]: "#DACBFF",
+                [newData[2][0]]: "#9D7FEA"
+            }
         },
     });
 }
+
+// 全產品類別營收比重 圓餅圖
+// function chart(data) {
+//     //console.log(data);
+//     let categories = {
+//         "床架": 0,
+//         "收納": 0,
+//         "窗簾": 0
+//     };
+
+//     data.forEach((item) => {
+//         item.products.forEach((productItem) => {
+//             if (categories[productItem.category] !== undefined) {
+//                 categories[productItem.category] += productItem.quantity;
+//             }
+//         });
+//     });
+
+//     // 將類別按數量排序
+//     let sortedCategories = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+
+//     // 生成圓餅圖資料
+//     let chartData = sortedCategories.map(item => [item[0], item[1]]);
+
+//     let chart = c3.generate({
+//         bindto: '#chart', // HTML 元素綁定
+//         data: {
+//             type: "pie",
+//             columns: chartData,
+//             colors: {
+//                 "窗簾": "#5434A7",
+//                 "床架": "#DACBFF",
+//                 "收納": "#9D7FEA"
+//             }
+//         },
+//     });
+// }
 
 init();
 
