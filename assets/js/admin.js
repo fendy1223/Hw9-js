@@ -91,7 +91,7 @@ function renderOrderList(data) {
     document.querySelectorAll(".orderStatus").forEach((item, index) => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
-            editOrderList(data[index].id);
+            editOrderList(data[index]);
         });
     });
 
@@ -106,7 +106,7 @@ function renderOrderList(data) {
 
 // 全品項營收比重 圓餅圖
 function chart(data) {
-    console.log(data);
+    //console.log(data);
     if (data.length === 0) {
         c3.generate({
             bindto: '#chart',
@@ -202,11 +202,12 @@ init();
 
 // 修改訂單狀態
 function editOrderList(orderId) {
+    //console.log(orderId);
     axios.put(`https://livejs-api.hexschool.io/api/livejs/v1/admin/${api_path}/orders`,
         {
             "data": {
-                "id": orderId,
-                "paid": true
+                "id": orderId.id,
+                "paid": orderId.paid == true ? false : true
             }
         },
         {

@@ -126,8 +126,9 @@ function renderShoppingCart(data) {
     document.querySelectorAll(".discardBtn").forEach((item, index) => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
-            //console.log(data.carts);
-            deleteCartItem(data.carts[index]);
+            if (e.target.classList.contains("material-icons")) {
+                deleteCartItem(data.carts[index]);
+            }
         });
     });
 }
@@ -194,6 +195,14 @@ const addCartItem = (id) => {
 
 // 清除購物車內全部產品
 function deleteAllCartList() {
+    console.log(cartProducts);
+    if (cartProducts.carts.length === 0) {
+        Swal.fire({
+            title: "目前無產品",
+            icon: "warning"
+        });
+        return;
+    }
     Swal.fire({
         title: '確定要刪除所有產品嗎？',
         icon: 'warning',
@@ -280,6 +289,8 @@ function createOrder() {
 
     if (!customerEmail.validity.valid) {
         customerEmail.setCustomValidity("請輸入有效的電子信箱地址");
+        orderInfoForm.reportValidity();
+        return;
     } else {
         customerEmail.setCustomValidity("");
     }
